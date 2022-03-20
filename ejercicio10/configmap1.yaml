@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap1
+data:
+  config_location : "/mydata/config.json"
+  secret_location : "/mysecrets/secret.json"

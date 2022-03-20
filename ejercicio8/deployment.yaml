@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passwordapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: passwordapi1
+  template:
+    metadata:
+      labels:
+        app: passwordapi1
+    spec:
+      containers:
+      - name: passwordapi1
+        image: nicopaez/password-api
+        ports:
+        - containerPort: 3000

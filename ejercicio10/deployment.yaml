@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ping-app-kubernetes
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ping-app
+  template:
+    metadata:
+      labels:
+        app: ping-app
+    spec:
+      containers:
+      - name: ping-app-container
+        image: nicopaez/pingapp:2.1.0
+        env: 
+         - name: CONFIG_LOCATION                       
+           valueFrom:
+             configMapKeyRef:
+              name: configmap1         
+              key: config_location 
+         - name: SECRETS_LOCATION                            
+           valueFrom:
+             configMapKeyRef:
+               name: configmap1         
+               key: secret_location
+        volumeMounts:
+          - name: config2
+            mountPath: "/mydata"
+            readOnly: true
+          - name: secrets2
+            mountPath: "/mysecrets"
+            readOnly: true
+      volumes:
+        - name: config2
+          configMap:
+
+            name: configmap2
+
+            items:
+            - key: "config.json"
+              path: "/config.json"
+        - name: secrets2
+          secret:
+            name: secret1
+            items:
+            - key: username
+              path: my-group/my-username
+            - key: "secret.json"
+              path: "/secrets.json"
+
+      
